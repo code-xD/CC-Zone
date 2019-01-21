@@ -24,8 +24,15 @@
         <a href="#" class="btn btn-primary">Read More &rarr;</a>
       </div>
       <div class="card-footer text-muted">
-        Posted on January 1, 2017 by
+        <div class='row'>
+        <div class="col-10">
+        Posted on {{post.date}} by
         <a href="#">{{post.author}}</a>
+        </div>
+        <div class="col-2">
+        {{post.likes}} Likes
+        </div>
+        </div>
       </div>
     </div>
   {%endfor%}

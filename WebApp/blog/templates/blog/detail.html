@@ -1,0 +1,49 @@
+{%extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{%block navbar%}
+  <ul class="navbar-nav">
+    <li class="nav-item ">
+      <a class="nav-link" href="{%url 'blog-home'%}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{%url 'blog-compose'%}">Compose</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Tryout</a>
+    </li>
+  </ul>
+{%endblock navbar%}
+{% block blog-post %}
+      <div class="card mb-4" >
+        <div class="card-body">
+          <h2 class="card-title">{{post.title}}</h2>
+          <p class="card-text">{{post.content}}</p>
+          <a href="#" class="btn btn-primary">Read More &rarr;</a>
+        </div>
+        <div class="card-footer text-muted">
+          Posted on {{post.date}} by
+          <a href="#">{{post.author}}</a>
+        </div>
+      </div>
+      <div class="content-section">
+          <form method="POST">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                  <legend class="border-bottom mb-4">Comments:</legend>
+                  {{ form|crispy }}
+              </fieldset>
+              <div class="form-group">
+                  <button class="btn btn-outline-info ml-auto" type="submit">Add Comment</button>
+              </div>
+          </form>
+      </div>
+      {%for comment in comments%}
+        <div class="card mb-4" >
+          <div class="card-body">
+            <h2 class="card-title">{{comment.author}}</h2>
+            <p class="card-text">{{comment.comment}}</p>
+              Posted on {{comment.date}}
+            </div>
+          </div>
+      {%endfor%}
+{% endblock blog-post %}
