@@ -9,7 +9,6 @@ class Post(models.Model):
     content = models.TextField()
     title = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
-    likes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -24,3 +23,11 @@ class Comment(models.Model):
     def __str__(self):
         poster = self.author
         return f"{poster.username}-{self.post.title}-{self.pk}"
+
+
+class Like(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.post.title}-{self.author.username}"

@@ -1,8 +1,9 @@
 {% load socialaccount %}
   <html lang="en">
     <head>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    </head>
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+      <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script></head>
     <body>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="https://github.com/code-xD/CC-Zone">CC-Zone</a>
@@ -12,8 +13,17 @@
           <ul class="navbar-nav ml-auto">
           {%if user.is_authenticated%}
             <li class="nav-item">
-                <a class="nav-link btn btn-outline-lighttext-light" href="#">Logged in as {{user.username}}</a>
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-home' user.profile.id %}">Logged in as {{user.username}}</a>
             </li>
+            {%if act%}
+            <li class="nav-item active">
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-posts' user.profile.id%}">My Posts</a>
+            </li>
+            {%else%}
+            <li class="nav-item">
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-posts' user.profile.id%}">My Posts</a>
+            </li>
+            {%endif%}
             <li class="nav-item">
                 <a class="nav-link btn btn-outline-lighttext-light" href="/accounts/logout">Logout</a>
             </li>
@@ -40,7 +50,11 @@
           <div class="col-md-9">
 
             <h1 class="my-4">Welcome:
-              <small>user_name</small>
+            {%if user.is_authenticated%}
+              <small>{{user.username}}</small>
+            {%else%}
+              <small>Guest</small>
+            {%endif%}
             </h1>
             {%block blog-post%}
             {%endblock blog-post%}
@@ -48,11 +62,34 @@
           <!-- Sidebar Widgets Column -->
           <div class="col-md-2" >
             <!-- Side Widget -->
-            <div class="card my-4" style="width:20rem;" >
-              <h5 class="card-header">Side Widget</h5>
+            <div class="card my-4" style="width:25rem;" >
+              {%if user.is_authenticated%}
+              <h5 class="card-header">WELCOME!!</h5>
               <div class="card-body">
-                You can put anything you want inside of these side widgets. They are easy to use, and feature the new Bootstrap 4 card containers!
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-3 img" >
+                      <img class="rounded-circle" style="width:85px;height:85px" src="{{user.profile.image.url}}"  alt="">
+                    </div>
+                    <div class="col-md-9 details">
+                      <blockquote>
+                        <h5>{{user.first_name}} {{user.last_name}}</h5>
+                        <small><cite title="Source Title">Joined on {{user.date_joined}}<i class="icon-map-marker"></i></cite></small>
+                      </blockquote>
+                      <p>
+                        Email:{{user.email}} <br>
+                        Blogger <br>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
+              {%else%}
+              <h5 class="card-header">Guest Mode:</h5>
+              <div class="card-body">
+                <p>Login to access full functionality.</p>
+              </div>
+              {%endif%}
             </div>
           </div>
 

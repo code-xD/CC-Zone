@@ -1,6 +1,21 @@
 from django.forms import ModelForm
 from django import forms
 from .models import Post
+from allauth.account.forms import LoginForm
+from django.conf import settings
+from django.http import HttpResponse
+
+#
+# class MyCustomLoginForm(LoginForm):
+#
+#     def login(self, *args, **kwargs):
+#         data = self.cleaned_data['email']
+#         if data.split('@')[1].lower() == settings.ALLOWED_DOMAIN:
+#             raise forms.ValidationError((u'domena!'))
+#             return super(MyCustomLoginForm, self).login(*args, **kwargs)
+#         else:
+#             return HttpResponse(404)
+#         # Add your own processing here.
 
 
 class PostCreationForm(ModelForm):

@@ -8,9 +8,6 @@
     <li class="nav-item">
       <a class="nav-link" href="{%url 'blog-compose'%}">Compose</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Tryout</a>
-    </li>
   </ul>
 {%endblock navbar%}
 {% block blog-post %}
@@ -18,14 +15,28 @@
         <div class="card-body">
           <h2 class="card-title">{{post.title}}</h2>
           <p class="card-text">{{post.content}}</p>
-          <a href="#" class="btn btn-primary">Read More &rarr;</a>
+          <!-- <a href="#" class="btn btn-primary">Read More &rarr;</a> -->
         </div>
         <div class="card-footer text-muted">
-          Posted on {{post.date}} by
-          <a href="#">{{post.author}}</a>
+          <div class='row'>
+            <div class="col-10">
+              Posted on {{post.date}} by
+              <a href="#">{{post.author}}</a>
+            </div>
+            <div class="col-2">
+              {{post.likes}} Likes
+            </div>
+          </div>
         </div>
       </div>
+      {%if user.is_authenticated%}
       <div class="content-section">
+          <form method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                  <button class="btn btn-outline-success ml-auto" type="submit" name ="like">Like</button>
+              </div>
+          </form>
           <form method="POST">
               {% csrf_token %}
               <fieldset class="form-group">
@@ -37,6 +48,7 @@
               </div>
           </form>
       </div>
+      {%endif%}
       {%for comment in comments%}
         <div class="card mb-4" >
           <div class="card-body">

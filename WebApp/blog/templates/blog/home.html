@@ -1,15 +1,19 @@
 {%extends 'blog/base.html'%}
 
 {%block navbar%}
+
   <ul class="navbar-nav">
+{%if not act%}
     <li class="nav-item active">
       <a class="nav-link" href="{%url 'blog-home'%}">Home <span class="sr-only">(current)</span></a>
     </li>
+{%else%}
+    <li class="nav-item">
+      <a class="nav-link" href="{%url 'blog-home'%}">Home <span class="sr-only">(current)</span></a>
+    </li>
+{%endif%}    
     <li class="nav-item">
       <a class="nav-link" href="{%url 'blog-compose'%}">Compose</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Tryout</a>
     </li>
   </ul>
 {%endblock navbar%}
@@ -21,17 +25,17 @@
       <div class="card-body">
         <h2 class="card-title">{{post.title}}</h2>
         <p class="card-text">{{post.content}}</p>
-        <a href="#" class="btn btn-primary">Read More &rarr;</a>
+        <a href="{%url 'blog-detail' post.id%}" class="btn btn-primary">Read More &rarr;</a>
       </div>
       <div class="card-footer text-muted">
         <div class='row'>
-        <div class="col-10">
-        Posted on {{post.date}} by
-        <a href="#">{{post.author}}</a>
-        </div>
-        <div class="col-2">
-        {{post.likes}} Likes
-        </div>
+          <div class="col-10">
+            Posted on {{post.date}} by
+            <a href="#">{{post.author}}</a>
+          </div>
+          <div class="col-2">
+            {{post.likes}} Likes
+          </div>
         </div>
       </div>
     </div>
