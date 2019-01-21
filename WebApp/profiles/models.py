@@ -13,7 +13,7 @@ class Profile(models.Model):
     likes_counter = models.PositiveIntegerField(default=0)
 
     def update(self):
-        self.likes_counter = Like.objects.all().filter(author=self.user).count()
+        self.likes_counter = Like.objects.all().filter(post__author=self.user).count()
         self.post_counter = Post.objects.all().filter(author=self.user).count()
 
     def __str__(self):
