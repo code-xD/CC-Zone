@@ -33,8 +33,18 @@
       <div class="content-section">
           <form method="POST">
               {% csrf_token %}
-              <div class="form-group">
+              <div class="row">
+              <div class="col">
                   <button class="btn btn-outline-success ml-auto" type="submit" name ="like">Like</button>
+              </div>
+              {%ifequal post.author user%}
+              <div class="col">
+                  <a class="btn btn-outline-success ml-auto" href="{%url 'blog-update' post.id%}">Update</a>
+              </div>
+              <div class="col pl-5">
+                  <a class="btn btn-outline-danger ml-auto" href="{%url 'blog-delete' post.id%}">Delete</a>
+              </div>
+              {%endifequal%}
               </div>
           </form>
           <form method="POST">

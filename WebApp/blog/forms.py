@@ -31,3 +31,9 @@ class CommentForm(forms.Form):
         max_length=100,
         widget=forms.Textarea(attrs={'rows': 4, 'cols': 15})
     )
+
+
+class PostUpdateForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']

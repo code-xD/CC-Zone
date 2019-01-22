@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Post, Comment, Like
 from django.contrib import messages
-from .forms import PostCreationForm, CommentForm
+from .forms import PostCreationForm, CommentForm, PostUpdateForm
 
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -36,6 +36,33 @@ def compose(request):
     else:
         form = PostCreationForm()
         return render(request, 'blog/create.html', {'form': form})
+
+
+@login_required
+def update_post(request, pk):
+    post_update = get_object_or_404(Post, id=pk)
+    if request.user == post_update.author:
+        if request.method == 'POST':
+            form = PostUpdateForm(request.POST)
+            if form.is_valid():
+                post_update.title = form.cleaned_data['title']
+                post_update.content = form.cleaned_data['content']
+                post_update.save()
+            return redirect('/')
+        else:
+            form = PostUpdateForm(instance=Post.objects.get(id=pk))
+            return render(request, 'blog/update.html', {'form': form})
+    else:
+        return redirect('/')
+
+
+def delete_post(request, pk):
+    post_update = get_object_or_404(Post, id=pk)
+    if request.user == post_update.author:
+        post_update.delete()
+        return redirect('/')
+    else:
+        return redirect('/')
 
 
 def detail(request, pk):
