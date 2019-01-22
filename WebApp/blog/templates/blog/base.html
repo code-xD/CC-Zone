@@ -13,7 +13,7 @@
           <ul class="navbar-nav ml-auto">
           {%if user.is_authenticated%}
             <li class="nav-item">
-                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-home' user.profile.id %}">Logged in as {{user.username}}</a>
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-home' user.username %}">Logged in as {{user.username}}</a>
             </li>
             {%if act%}
             <li class="nav-item active">
@@ -24,6 +24,9 @@
                 <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-posts' user.profile.id%}">My Posts</a>
             </li>
             {%endif%}
+            <li class="nav-item">
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-create' %}">Update Profile</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link btn btn-outline-lighttext-light" href="/accounts/logout">Logout</a>
             </li>

@@ -11,7 +11,7 @@
     <li class="nav-item">
       <a class="nav-link" href="{%url 'blog-home'%}">Home <span class="sr-only">(current)</span></a>
     </li>
-{%endif%}    
+{%endif%}
     <li class="nav-item">
       <a class="nav-link" href="{%url 'blog-compose'%}">Compose</a>
     </li>
@@ -31,7 +31,7 @@
         <div class='row'>
           <div class="col-10">
             Posted on {{post.date}} by
-            <a href="#">{{post.author}}</a>
+            <a href="{%url 'profile-home' post.author.username%}">{{post.author}}</a>
           </div>
           <div class="col-2">
             {{post.likes}} Likes

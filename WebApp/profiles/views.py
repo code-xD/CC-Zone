@@ -6,58 +6,103 @@ from .forms import UserCreationForm, ProfileCreationForm
 from PIL import Image
 
 
-def home(request, pk):
-    for profile in Profile.objects.all().filter(pk=pk):
+def home(request, username):
+    for profile in Profile.objects.all().filter(user__username=username):
         profile.update()
         profile.save()
-    context = {'profile': Profile.objects.all().filter(pk=pk)[0]}
+    req_prof = Profile.objects.all().filter(user__username=username)
+    print(req_prof)
+    context = {'profiles': req_prof}
     return render(request, 'profiles/home.html', context)
 
 
 @login_required
 def create(request):
-    req_user = request.user
     try:
-        user_check = req_user.profile
-        return redirect('blog-home')
+        prof = request.user.profile
+        if request.method == 'POST':
+            u_form = UserCreationForm(request.POST, instance=request.user)
+            p_form = ProfileCreationForm(request.POST, request.FILES, instance=request.user.profile)
+            if u_form.is_valid() and p_form.is_valid():
+                usr_profile_img = p_form.cleaned_data['image']
+                u_form.save()
+                prof = Profile.objects.get(user=request.user)
+                prof.image = usr_profile_img
+                prof.save()
+                img_save(prof, request)
+                prof.save()
+                messages.success(request, f'Your account has been updated.')
+                return redirect('blog-home')
+        else:
+            u_form = UserCreationForm(instance=request.user)
+            p_form = ProfileCreationForm(instance=request.user.profile)
+            context = {
+                'u_form': u_form,
+                'p_form': p_form
+            }
+        return render(request, 'profiles/create.html', context)
     except:
         if request.method == 'POST':
-            u_form = UserCreationForm(request.POST)
-            p_form = ProfileCreationForm(request.POST,
-                                         request.FILES)
+            u_form = UserCreationForm(request.POST, instance=request.user)
+            p_form = ProfileCreationForm(request.POST, request.FILES)
             if u_form.is_valid() and p_form.is_valid():
-                usr_profile = p_form.save(commit=False)
-                usr_info = u_form.save(commit=False)
-                request.user.first_name = usr_info.first_name
-                request.user.last_name = usr_info.last_name
-                request.user.email = usr_info.email
-                request.user.save()
-                prof = Profile(user=request.user, image=usr_profile.image)
+                usr_profile_img = p_form.cleaned_data['image']
+                u_form.save()
+                prof = Profile(user=request.user, image=usr_profile_img)
                 prof.save()
-                img = Image.open(prof.image.path)
-                if img.height != 300 or img.width != 300:
-                    output_size = (300, 300)
-                    img.thumbnail(output_size)
-                    img.save(prof.image.path)
+                img_save(prof, request)
                 prof.save()
-                messages.success(request, f'Your account has been created.')
+                messages.success(request, f'Your account has been updated.')
                 return redirect('blog-home')
-
         else:
             u_form = UserCreationForm(instance=request.user)
             p_form = ProfileCreationForm()
+            context = {
+                'u_form': u_form,
+                'p_form': p_form
+            }
+            return render(request, 'profiles/create.html', context)
 
-        context = {
-            'u_form': u_form,
-            'p_form': p_form
-        }
 
-    return render(request, 'profiles/create.html', context)
+def img_save(prof, request):
+    img = Image.open(prof.image.path)
+    if img.height != 300 or img.width != 300:
+        output_size = (300, 300)
+        img.thumbnail(output_size)
+        img.save(prof.image.path)
 
 
 def no_of_likes(post):
     occurances = Like.objects.all().filter(post=post).count()
     return occurances
+
+
+@login_required
+def base_create(request):
+    try:
+        prof = request.user.profile
+        return redirect('/')
+    except:
+        if request.method == 'POST':
+            u_form = UserCreationForm(request.POST, instance=request.user)
+            p_form = ProfileCreationForm(request.POST, request.FILES)
+            if u_form.is_valid() and p_form.is_valid():
+                usr_profile_img = p_form.cleaned_data['image']
+                u_form.save()
+                prof = Profile(user=request.user, image=usr_profile_img)
+                prof.save()
+                img_save(prof, request)
+                prof.save()
+                messages.success(request, f'Your account has been updated.')
+                return redirect('blog-home')
+        else:
+            u_form = UserCreationForm(instance=request.user)
+            p_form = ProfileCreationForm()
+            context = {
+                'u_form': u_form,
+                'p_form': p_form
+            }
+            return render(request, 'profiles/create.html', context)
 
 
 @login_required

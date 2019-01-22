@@ -71,6 +71,8 @@ def detail(request, pk):
         like_instance = Like(author=request.user, post=comment_post)
         for like_element in Like.objects.all().filter(post=comment_post):
             if str(like_element) == str(like_instance):
+                Like.objects.filter(author=request.user, post=comment_post).delete()
+                comment_post.likes = no_of_likes(comment_post)
                 return render(
                     request, 'blog/detail.html',
                     {

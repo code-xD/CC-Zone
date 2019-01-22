@@ -9,12 +9,12 @@
       <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <fieldset class="form-group">
-              <h1 class="border-bottom pt-3 mb-4">Create Your Profile:</h1>
+              <h1 class="border-bottom pt-3 mb-4">Setup Your Profile:</h1>
               {{ u_form|crispy }}
               {{ p_form|crispy }}
           </fieldset>
           <div class="form-group">
-              <button class="btn btn-outline-info" type="submit">Create Account</button>
+              <button class="btn btn-outline-info" type="submit">Modify Account</button>
           </div>
       </form>
     </div>

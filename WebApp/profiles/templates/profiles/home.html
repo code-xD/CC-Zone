@@ -1,4 +1,4 @@
-{% load socialaccount %}
+  {% load socialaccount %}
   <html lang="en">
     <head>
       <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -19,10 +19,13 @@
           <ul class="navbar-nav ml-auto">
           {%if user.is_authenticated%}
             <li class="nav-item active">
-                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-home' profile.id %}">Logged in as {{user.username}}</a>
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-home' user.username %}">Logged in as {{user.username}}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-posts' user.profile.id%}">My Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-outline-lighttext-light" href="{%url 'profile-create' %}">Update Profile</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link btn btn-outline-lighttext-light" href="/accounts/logout">Logout</a>
@@ -38,9 +41,10 @@
 
 <div class="container emp-profile pt-3">
                 <div class="row">
+                  {%for profile in profiles%}
                     <div class="col-md-4">
                         <div class="profile-img">
-                            <img src="{{user.profile.image.url}}" style="width=300px;height=300px;" alt=""/>
+                            <img src="{{profile.image.url}}" style="width=300px;height=300px;" alt=""/>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -61,6 +65,7 @@
                         <div class="tab-content profile-tab" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                         <div class="row">
+
                                             <div class="col-md-6">
                                                 <label>User Id:</label>
                                             </div>
@@ -99,6 +104,7 @@
                                             <div class="col-md-6">
                                                   <p>{{profile.post_counter}} Posts</p>
                                             </div>
+                                            {%endfor%}
                                         </div>
                             </div>
                         </div>
