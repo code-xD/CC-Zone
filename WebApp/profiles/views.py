@@ -7,12 +7,19 @@ from PIL import Image
 
 
 def home(request, username):
+    post_dict = Post.objects.all().filter(author__username=username).order_by('-date')[:5]
+    for post in post_dict:
+        short_view = post.content[:100]
+        post.content = short_view
+        post.likes = no_of_likes(post)
+
     for profile in Profile.objects.all().filter(user__username=username):
         profile.update()
         profile.save()
+
     req_prof = Profile.objects.all().filter(user__username=username)
     print(req_prof)
-    context = {'profiles': req_prof}
+    context = {'profiles': req_prof, 'posts': post_dict}
     return render(request, 'profiles/home.html', context)
 
 
