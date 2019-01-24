@@ -65,22 +65,22 @@
           <!-- Sidebar Widgets Column -->
           <div class="col-md-2" >
             <!-- Side Widget -->
-            <div class="card my-4" style="width:25rem;" >
+            <div class="card my-4" style="width:225%;" >
               {%if user.is_authenticated%}
               <h5 class="card-header">WELCOME!!</h5>
               <div class="card-body">
                 <div class="container">
                   <div class="row">
-                    <div class="col-md-3 img" >
+                    <div class="col-md-4 img" >
                       <img class="rounded-circle" style="width:85px;height:85px" src="{{user.profile.image.url}}"  alt="">
                     </div>
-                    <div class="col-md-9 details">
+                    <div class="col-md-8 details">
                       <blockquote>
                         <h5>{{user.first_name}} {{user.last_name}}</h5>
-                        <small><cite title="Source Title">Joined on {{user.date_joined}}<i class="icon-map-marker"></i></cite></small>
+                        <small><cite title="Source Title">Joined on <br>{{user.date_joined}}<i class="icon-map-marker"></i></cite></small>
                       </blockquote>
                       <p>
-                        Email:{{user.email}} <br>
+                        Email:<br>{{user.email}} <br>
                         Blogger <br>
                       </p>
                     </div>

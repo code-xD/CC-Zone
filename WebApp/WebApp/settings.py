@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'blog',
-    'profiles',
+    'profiles.apps.ProfilesConfig',
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -139,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_REDIRECT_URL = 'profile-base-create'
+LOGIN_REDIRECT_URL = '/'
 ALLOWED_DOMAIN = "example.com"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
